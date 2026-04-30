@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+.btn-primary {
+  --bs-btn-bg: #c1440e;
+  --bs-btn-border-color: #c1440e;
+  --bs-btn-hover-bg: #a33a0c;
+  --bs-btn-hover-border-color: #a33a0c;
+  --bs-btn-active-bg: #a33a0c;
+  --bs-btn-active-border-color: #a33a0c;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #c1440e;
+  --bs-btn-border-color: #c1440e;
+  --bs-btn-hover-bg: #c1440e;
+  --bs-btn-hover-border-color: #c1440e;
+  --bs-btn-active-bg: #a33a0c;
+}
+
+nav.navbar {
+  --bs-navbar-active-color: #e8650a;
+  --bs-navbar-hover-color: #e8650a;
+}

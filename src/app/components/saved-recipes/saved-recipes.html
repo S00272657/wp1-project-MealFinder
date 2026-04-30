@@ -1,0 +1,23 @@
+<h2 class="mb-3">Saved Recipes <span class="badge bg-secondary fs-6">{{ savedMealService.savedMeals().length }}</span></h2>
+
+@if (savedMealService.savedMeals().length === 0) {
+  <div class="alert alert-info">No recipes saved yet. Search or browse to find some</div>
+}
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+  @for (meal of savedMealService.savedMeals(); track meal['_id']) {
+    <div class="col">
+      <div class="card h-100 shadow-sm meal-card">
+        <img [src]="meal.strMealThumb" [alt]="meal.strMeal" class="card-img-top">
+        <div class="card-body">
+          <h6 class="card-title fw-semibold mb-1">{{ meal.strMeal }}</h6>
+          <p class="card-text small text-muted">{{ meal.strCategory }} · {{ meal.strArea }}</p>
+        </div>
+        <div class="card-footer bg-transparent border-top-0 d-flex gap-2 pb-3">
+          <a class="btn btn-sm btn-primary" [routerLink]="['/meal', meal.idMeal]">View Details</a>
+          <button class="btn btn-sm btn-outline-danger" (click)="savedMealService.removeMeal(meal['_id'])">Remove</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

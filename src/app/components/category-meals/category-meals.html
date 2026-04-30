@@ -1,0 +1,24 @@
+<a routerLink="/browse" class="btn btn-sm btn-outline-secondary mb-3">&larr; Back to Categories</a>
+
+<h2 class="mb-3">{{ category() }}</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+  @for (meal of mealService.categoryMeals(); track meal.idMeal) {
+    <div class="col">
+      <div class="card h-100 shadow-sm meal-card">
+        <img [src]="meal.strMealThumb" [alt]="meal.strMeal" class="card-img-top">
+        <div class="card-body">
+          <h6 class="card-title fw-semibold mb-0">{{ meal.strMeal }}</h6>
+        </div>
+        <div class="card-footer bg-transparent border-top-0 d-flex gap-2 pb-3">
+          <a class="btn btn-sm btn-primary" [routerLink]="['/meal', meal.idMeal]">View Details</a>
+          @if (isSaved(meal.idMeal)) {
+            <button class="btn btn-sm btn-secondary" disabled>Saved</button>
+          } @else {
+            <button class="btn btn-sm btn-outline-success" (click)="savedMealService.saveMeal(meal.idMeal)">Save +</button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>

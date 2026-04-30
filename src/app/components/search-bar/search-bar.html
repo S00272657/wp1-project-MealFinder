@@ -1,0 +1,9 @@
+<div class="mb-4">
+  <h2 class="mb-3">Search Meals</h2>
+  <div class="input-group">
+    <input class="form-control form-control-lg" [(ngModel)]="searchQuery" placeholder="Search meals by name..." (keyup.enter)="onSearch()">
+    <button class="btn btn-primary" (click)="onSearch()">Search</button>
+    <button class="btn btn-outline-secondary" (click)="onSurpriseMe()">Surprise Me</button>
+    <button class="btn btn-outline-danger" (click)="onClear()">Clear</button>
+  </div>
+</div>

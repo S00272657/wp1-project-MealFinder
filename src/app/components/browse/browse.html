@@ -1,0 +1,17 @@
+<h2 class="mb-3">Browse by Category</h2>
+
+<div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
+  @for (cat of mealService.categories(); track cat.idCategory) {
+    <div class="col">
+      <div class="card h-100 shadow-sm text-center meal-card">
+        <img [src]="cat.strCategoryThumb" [alt]="cat.strCategory" class="card-img-top p-3">
+        <div class="card-body py-2">
+          <h6 class="card-title fw-semibold mb-0">{{ cat.strCategory }}</h6>
+        </div>
+        <div class="card-footer bg-transparent border-top-0 pb-3">
+          <a class="btn btn-sm btn-outline-primary" [routerLink]="['/browse', cat.strCategory]">View Meals</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>
