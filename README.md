@@ -1,59 +1,72 @@
-# Wp1MealFinder
+# Meal Finder
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+An Angular web app for discovering recipes from around the world. Search by name, browse by category, or get a random meal, then save your favourites to a cloud-hosted database.
 
-## Development server
+Built as my Web Programming 1 project in second year of BSc Software Development at ATU Sligo. The front end is hosted on Amazon S3, and saved recipes go to an Express API running on Amazon EC2, backed by MongoDB.
 
-To start a local development server, run:
+![Meal Finder search screen](screenshots/search.png)
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Search:** look up meals by name, or hit "Surprise Me" for a random recipe
+- **Browse:** explore meals by category (Beef, Chicken, Dessert, Seafood and more)
+- **Meal details:** full ingredient list with measurements, cooking instructions and a link to a YouTube video
+- **Saved recipes:** save and remove favourites, stored in MongoDB through my own REST API
 
-## Code scaffolding
+| Browse | Meal details | Saved recipes |
+|---|---|---|
+| ![Browse](screenshots/browse.png) | ![Meal details](screenshots/details.png) | ![Saved recipes](screenshots/saved.png) |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tech stack
 
-```bash
-ng generate component component-name
-```
+- **Front end:** Angular 21 (standalone components, signals, routing), TypeScript, Bootstrap 5
+- **Back end:** Node.js, Express, MongoDB (Atlas)
+- **Hosting:** Amazon S3 (front end), Amazon EC2 (API)
+- **External API:** [TheMealDB](https://www.themealdb.com/api.php)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Architecture
 
-```bash
-ng generate --help
-```
+![Architecture diagram](screenshots/architecture.png)
 
-## Building
+The Angular app calls TheMealDB directly for searching, browsing and meal details. When a user saves a recipe, the app fetches the full meal record from TheMealDB first, then posts it to the Express API on EC2, which stores it in MongoDB. This makes sure saved meals never have missing fields, even when they were saved from a list view that only had partial data.
 
-To build the project run:
+### Front-end structure
 
-```bash
-ng build
-```
+![Component diagram](screenshots/components.png)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- `MealsApiService` handles all calls to TheMealDB and exposes results as Angular signals.
+- `SavedMealsService` handles saving, loading and removing recipes through the Express API.
+- Components are split by page (search, browse, category, saved, details, about), with the search page broken into a reusable search bar and results grid.
 
-## Running unit tests
+### API endpoints
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/meals` | List saved meals |
+| GET | `/meals/:id` | Get one saved meal |
+| POST | `/meals` | Save a meal |
+| DELETE | `/meals/:id` | Remove a saved meal |
 
-```bash
-ng test
-```
+The Express server structure was adapted from MongoDB's Express REST API sample application.
 
-## Running end-to-end tests
+## Running it locally
 
-For end-to-end (e2e) testing, run:
+**API**
 
-```bash
-ng e2e
-```
+1. `cd api-server`
+2. Create a `.env` file containing your MongoDB connection string: `ATLAS_URI=<your connection string>`
+3. `npm install`, then `npm start` (runs on port 5050)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+**Front end**
 
-## Additional Resources
+1. From the project root, run `npm install`
+2. `ng serve`, then open `http://localhost:4200`
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The development build points at `http://localhost:5050/meals` (see `src/environments`).
+
+## What I'd improve next
+
+- Add user accounts so each person has their own saved recipes
+- Serve the API over HTTPS behind a domain instead of a raw EC2 IP address
+- Write real unit tests for the services (the current spec files are the Angular defaults)
+- Add loading and error states for when an API call fails
